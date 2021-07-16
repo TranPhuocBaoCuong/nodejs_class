@@ -22,13 +22,24 @@
     "url": "https://github.com/TranPhuocBaoCuong/nodejs_class/issues"
   },
   "homepage": "https://github.com/TranPhuocBaoCuong/nodejs_class#readme",
+  "lint-staged": {
+    "src/**/*.{js,json,scss}": "prettier --single-quote --trailing-comma all --tab-width 4 --no-semi --write"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "dependencies": {
     "express": "^4.17.1",
     "express-handlebars": "^5.3.2"
   },
   "devDependencies": {
+    "husky": "^4.2.5",
+    "lint-staged": "^11.0.1",
     "morgan": "^1.10.0",
     "node-sass": "^6.0.1",
-    "nodemon": "^2.0.12"
+    "nodemon": "^2.0.12",
+    "prettier": "^2.3.2"
   }
 }
