@@ -1,16 +1,20 @@
+const Course = require('../models/Course')
+const { mongoosesToObject } = require('../../util/mongoose')
 
 class SiteController {
+    // [GET] /
+    index(req, res, next) {
+        Course.find({})
+            .then((courses) =>
+                res.render('home', { courses: mongoosesToObject(courses) }),
+            )
+            .catch(next)
+    }
 
-	// [GET] /
-	index(req, res) {
-		res.render('home')
-	}
-
-	// [GET] /search
-	search(req, res) {
-		res.render('search')
-	}
-
+    // [GET] /search
+    search(req, res) {
+        res.render('search')
+    }
 }
 
-module.exports = new SiteController
+module.exports = new SiteController()
