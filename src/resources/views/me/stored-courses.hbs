@@ -1,12 +1,29 @@
-<div class="mt-4">
+<form method="POST" action="/courses/handle-form-actions" class="mt-4" name="form-handle-action">
 	<div>
 		<h3>Khóa học của tôi</h3>
 		<a href="/me/trash/courses">Thùng rác ({{deletedCourses}})</a>
+
+		<div class="mt-4 d-flex align-items-center">
+			<div class="form-check">
+				<input class="form-check-input" type="checkbox" value="" id="chb-all">
+				<label class="form-check-label" for="chb-all">
+					Chọn tất cả
+				</label>
+			</div>
+
+			<select id="chb-select-all-option" class="form-control form-control-sm" name="action" required>
+				<option value="" selected>-- Chọn hành động --</option>
+				<option value="delete">Xóa</option>
+			</select>
+
+			<button class="btn btn-primary btn-execute" disabled>Thực hiện</button>
+		</div>
 	</div>
 
 	<table class="table mt-4">
 		<thead>
 			<tr>
+				<th></th>
 				<th scope="col">#</th>
 				<th scope="col">Tên khóa học</th>
 				<th scope="col">Thời gian tạo</th>
@@ -16,6 +33,11 @@
 		<tbody>
 			{{#each courses}}
 			<tr>
+				<td>
+					<div class="form-check">
+						<input class="form-check-input chb-all-item" type="checkbox" name="courseIds[]" value="{{this._id}}">
+					</div>
+				</td>
 				<th scope="row">{{sum @index 1}}</th>
 				<td>{{this.name}}</td>
 				<td>{{this.createdAt}}</td>
@@ -37,7 +59,7 @@
 			{{/each}}
 		</tbody>
 	</table>
-</div>
+</form>
 
 <form id="delete-course-form" method="POST"></form>
 
@@ -67,6 +89,10 @@
 		let courseId
 		const btnDeleteCourse = document.getElementById('delete-course-btn')
 		const deleteCourseForm = document.forms['delete-course-form']
+		const handleActionForm = document.forms['form-handle-action']
+		const chbAll = $('#chb-all')
+		const chbAllItems = $('.chb-all-item')
+		const btnExc = $('.btn-execute')
 		
 		$('#delete-course-modal').on('show.bs.modal', function (event) {
 			const button = $(event.relatedTarget)
@@ -76,6 +102,27 @@
 		btnDeleteCourse.onclick = () => {
 			deleteCourseForm.action = `/courses/${courseId}?_method=DELETE`
 			deleteCourseForm.submit()
+		}
+
+		chbAll.change(function() {
+			let isCheckedAll = $(this).prop('checked')
+
+			chbAllItems.prop('checked', isCheckedAll)
+			renderExcBtn()
+		})
+
+		chbAllItems.change(function() {
+			let isCheckedAll =
+			chbAllItems.length === $('input[name="courseIds[]"]:checked').length
+
+			chbAll.prop('checked', isCheckedAll)
+			renderExcBtn()
+		})
+
+		function renderExcBtn() {
+			let checkedCount = $('input[name="courseIds[]"]:checked').length
+
+			checkedCount > 0 ? btnExc.attr('disabled', false) : btnExc.attr('disabled', true)
 		}
 	})
 </script>
