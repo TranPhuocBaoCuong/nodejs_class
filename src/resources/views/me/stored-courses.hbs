@@ -19,15 +19,24 @@
 			<button class="btn btn-primary btn-execute" disabled>Thực hiện</button>
 		</div>
 	</div>
-
+	
 	<table class="table mt-4">
 		<thead>
 			<tr>
 				<th></th>
 				<th scope="col">#</th>
-				<th scope="col">Tên khóa học</th>
-				<th scope="col">Thời gian tạo</th>
-				<th scope="col" colspan="3">Thời gian chỉnh sửa</th>
+				<th scope="col">
+					Tên khóa học
+					{{{sortable 'name' _sort}}}
+				</th>
+				<th scope="col">
+					Thời gian tạo
+					{{{sortable 'createdAt' _sort}}}	
+				</th>
+				<th scope="col" colspan="3">
+					Thời gian chỉnh sửa
+					{{{sortable 'updatedAt' _sort}}}	
+				</th>
 			</tr>
 		</thead>
 		<tbody>
